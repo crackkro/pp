@@ -1,0 +1,397 @@
+SC Practical
+
+
+**********   Exp_2_McCulloch-Pitts   **********
+
+def mcp_AND(w1, w2):
+    threshold = 2
+    weight1, weight2 = 1, 1
+    weighted_sum = weight1 * w1 + weight2 * w2
+    return 1 if weighted_sum >= threshold else 0
+
+def mcp_OR(w1, w2):
+    threshold = 1
+    weight1, weight2 = 1, 1
+    weighted_sum = weight1 * w1 + weight2 * w2
+    return 1 if weighted_sum >= threshold else 0
+
+def mcp_XOR(w1, w2):
+    threshold = 1
+    weight1, weight2 = 1, 1
+    weighted_sum = weight1 * w1 + weight2 * w2
+    return 1 if weighted_sum == threshold else 0
+
+def main():
+    while True:
+        print("Choose from the below options what operation you want to perform : ")
+        print("1] McCulloch Pitts AND")
+        print("2] McCulloch Pitts OR")
+        print("3] McCulloch Pitts XOR")
+        print("4] Exit")
+        choice = int(input("Enter the operation you want to perform : "))
+
+        match choice:
+            case 1:
+                w1 = int(input("Enter the w1: "))
+                w2 = int(input("Enter the w1: "))
+                output = mcp_AND(w1, w2)
+                print("Output:", output)
+                
+            case 2:
+                w1 = int(input("Enter the w1: "))
+                w2 = int(input("Enter the w1: "))
+                output = mcp_OR(w1, w2)
+                print("Output:", output)
+                
+            case 3:
+                w1 = int(input("Enter the w1: "))
+                w2 = int(input("Enter the w1: "))
+                output = mcp_XOR(w1, w2)
+                print("Output:", output)
+                
+            case 4:
+                break
+            
+if __name__ == "__main__":
+    main()
+
+
+
+**********   Exp_3_Fuzzy Set Operations   **********
+
+##### Direct Output code #####
+
+def fuzzy_union(setA, setB):
+    return {x: round(max(setA.get(x, 0), setB.get(x, 0)), 1) for x in set(setA).union(set(setB))}
+
+def fuzzy_intersection(setA, setB):
+    return {x: round(min(setA.get(x, 0), setB.get(x, 0)), 1) for x in set(setA).intersection(set(setB))}
+
+def fuzzy_complement(fuzzy_set):
+    return {x: round(1 - membership, 1) for x, membership in fuzzy_set.items()}
+
+A = {'a': 0.2, 'b': 0.8, 'c': 0.5}
+B = {'b': 0.6, 'c': 0.7, 'd': 0.4}
+
+union_result = fuzzy_union(A, B)
+intersection_result = fuzzy_intersection(A, B)
+complement_A = fuzzy_complement(A)
+complement_B = fuzzy_complement(B)
+
+print("Fuzzy Set A:", A)
+print("Fuzzy Set B:", B)
+print("\nUnion of A and B:", union_result)
+print("Intersection of A and B:", intersection_result)
+print("Complement of A:", complement_A)
+print("Complement of B:", complement_B)
+
+
+##### Input/Output code #####
+
+def fuzzy_union(setA, setB): 
+    return {x: round(max(setA.get(x, 0), setB.get(x, 0)), 1) for x in set(setA).union(set(setB))}
+
+def fuzzy_intersection(setA, setB): 
+    return {x: round(min(setA.get(x, 0), setB.get(x, 0)), 1) for x in set(setA).intersection(set(setB))}
+
+def fuzzy_complement(fuzzy_set): 
+    return {x: round(1 - membership, 1) for x, membership in fuzzy_set.items()}
+
+def input_fuzzy_set(name):
+    fuzzy_set = {}
+    n = int(input(f"Enter the number of elements in Fuzzy Set {name}: "))
+    for _ in range(n):
+        element = input(f"Enter the element name for Fuzzy Set {name}: ")
+        membership_value = float(input(f"Enter the membership value for {element} (0 to 1): "))
+        fuzzy_set[element] = membership_value
+    return fuzzy_set
+
+print("\nFuzzy Set Operations: Union, Intersection, and Complement")
+
+A = input_fuzzy_set("A")
+B = input_fuzzy_set("B")
+
+union_result = fuzzy_union(A, B)
+intersection_result = fuzzy_intersection(A, B)
+complement_A = fuzzy_complement(A)
+complement_B = fuzzy_complement(B)
+
+print("\nFuzzy Set A:", A)
+print("Fuzzy Set B:", B)
+print("\nUnion of A and B:", union_result)
+print("Intersection of A and B:", intersection_result)
+print("Complement of A:", complement_A)
+print("Complement of B:", complement_B)
+
+
+
+**********   Exp_4_Fuzzy Extension Principle   **********
+
+import numpy as np
+
+A = {1: 0.2, 2: 0.8, 3: 1.0, 4: 0.4}
+B = {1: 0.6, 2: 0.9, 3: 0.5}
+
+def fuzzy_addition(A, B): 
+    Z = {}
+    
+    for a_value, a_membership in A.items():
+        for b_value, b_membership in B.items():
+            z_value = a_value + b_value
+            z_membership = min(a_membership, b_membership)
+            
+            if z_value in Z:
+                Z[z_value] = max(Z[z_value], z_membership)
+            else:
+                Z[z_value] = z_membership
+    
+    return Z
+
+Z_add = fuzzy_addition(A, B)
+
+print("Fuzzy Set A:", A)
+print("Fuzzy Set B:", B)
+print("\nResult of Fuzzy Addition (A + B):")
+for key in sorted(Z_add):
+    print(f"Z({key}) = {Z_add[key]}")
+
+
+
+**********   Exp_5_Supervised Neural Network   **********
+
+In Jupyter ---->
+
+!pip install numpy pandas scikit-learn tensorflow
+
+# Import required libraries
+import numpy as np
+import pandas as pd
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Input
+from tensorflow.keras.utils import to_categorical
+
+# Step 1: Load the dataset
+iris = load_iris()
+X = iris.data  # Features
+y = iris.target  # Labels
+
+# Step 2: One-hot encode the labels
+encoder = OneHotEncoder(sparse_output=False)  # Updated to use sparse_output
+y_encoded = encoder.fit_transform(y.reshape(-1, 1))
+
+# Step 3: Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, test_size=0.2, random_state=42)
+
+# Step 4: Create the Neural Network Model
+model = Sequential()
+model.add(Input(shape=(4,)))  # Input layer with shape of 4 features
+model.add(Dense(10, activation='relu'))  # Hidden layer
+model.add(Dense(3, activation='softmax'))  # Output layer with 3 classes
+
+# Step 5: Compile the model
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+# Step 6: Train the model
+model.fit(X_train, y_train, epochs=100, batch_size=5, verbose=1)
+
+# Step 7: Evaluate the model
+loss, accuracy = model.evaluate(X_test, y_test)
+print(f'Test Loss: {loss:.4f}, Test Accuracy: {accuracy:.4f}')
+
+
+
+**********   Exp_6_Unsupervised Neural Network   **********
+
+In Jupyter ---->
+
+# Import required libraries
+import numpy as np
+import pandas as pd
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Input
+import matplotlib.pyplot as plt
+
+# Step 1: Load the dataset
+iris = load_iris()
+X = iris.data  # Features
+
+# Step 2: Standardize the dataset
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Step 3: Split the data into training and testing sets
+X_train, X_test = train_test_split(X_scaled, test_size=0.2, random_state=42)
+
+# Step 4: Create the Autoencoder Model
+model = Sequential()
+model.add(Input(shape=(4,)))                             # Input layer
+model.add(Dense(4, activation='relu'))                    # Encoder
+model.add(Dense(2, activation='relu'))                    # Bottleneck (latent representation)
+model.add(Dense(4, activation='relu'))                    # Decoder
+model.add(Dense(4, activation='sigmoid'))                 # Output layer
+
+# Step 5: Compile the model
+model.compile(loss='mean_squared_error', optimizer='adam')
+
+# Step 6: Train the model
+model.fit(X_train, X_train, epochs=100, batch_size=5, verbose=1)
+
+# Step 7: Encode the test data
+encoded_data = model.predict(X_test)
+
+# Step 8: Plot the original vs. reconstructed data
+plt.figure(figsize=(12, 6))
+
+# Plot original data
+plt.subplot(1, 2, 1)
+plt.scatter(X_test[:, 0], X_test[:, 1], color='blue', label='Original Data')
+plt.title('Original Data')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.legend()
+
+# Plot encoded data
+plt.subplot(1, 2, 2)
+plt.scatter(encoded_data[:, 0], encoded_data[:, 1], color='red', label='Encoded Data')
+plt.title('Encoded Data (Latent Representation)')
+plt.xlabel('Latent Feature 1')
+plt.ylabel('Latent Feature 2')
+plt.legend()
+
+plt.show()
+
+
+**********   Exp_7_ Fuzzy Control System   **********
+
+In Jupyter ---->
+
+import numpy as np
+import skfuzzy as fuzz
+from skfuzzy import control as ctrl
+import matplotlib.pyplot as plt
+
+# Ensure plots display inline
+%matplotlib inline
+
+# New Antecedent/Consequent objects hold universe variables and membership functions
+quality = ctrl.Antecedent(np.arange(0, 11, 1), 'quality')
+service = ctrl.Antecedent(np.arange(0, 11, 1), 'service')
+tip = ctrl.Consequent(np.arange(0, 26, 1), 'tip')
+
+# Auto-membership function population
+quality.automf(3)
+service.automf(3)
+
+# Custom membership functions
+tip['low'] = fuzz.trimf(tip.universe, [0, 0, 13])
+tip['medium'] = fuzz.trimf(tip.universe, [0, 13, 25])
+tip['high'] = fuzz.trimf(tip.universe, [13, 25, 25])
+
+# Define fuzzy rules
+rule1 = ctrl.Rule(quality['poor'] | service['poor'], tip['low'])
+rule2 = ctrl.Rule(service['average'], tip['medium'])
+rule3 = ctrl.Rule(service['good'] | quality['good'], tip['high'])
+
+# Control System Creation and Simulation
+tipping_ctrl = ctrl.ControlSystem([rule1, rule2, rule3])
+tipping = ctrl.ControlSystemSimulation(tipping_ctrl)
+
+# Provide inputs and compute the tip
+tipping.input['quality'] = 6.5
+tipping.input['service'] = 9.8
+tipping.compute()
+
+# Output the result
+print(tipping.output['tip'])  
+
+# Plotting membership functions for quality
+quality.view()
+plt.title("Quality Membership Functions")
+plt.show()
+
+# Plotting membership functions for service
+service.view()
+plt.title("Service Membership Functions")
+plt.show()
+
+# Plotting membership functions for tip
+tip.view(sim=tipping)
+plt.title("Tip Membership Functions")
+plt.show()
+
+
+
+**********  Exp_8_ Operators in Genetic Algorithm   **********
+
+In Jupyter ---->
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Problem definition
+def fitness_function(x):
+    return x ** 2  # We want to maximize f(x) = x^2
+
+# Genetic Algorithm parameters
+population_size = 10
+num_generations = 50
+mutation_rate = 0.1
+crossover_rate = 0.9
+x_bounds = (0, 10)  # x must be between 0 and 10
+
+# Initialize the population
+def initialize_population(size, bounds):
+    return np.random.uniform(bounds[0], bounds[1], size)
+
+# Select parents using tournament selection
+def select_parents(population, fitness):
+    idx = np.random.randint(0, len(population), size=2)
+    return population[idx[np.argmax(fitness[idx])]]
+
+# Crossover operation
+def crossover(parent1, parent2):
+    if np.random.rand() < crossover_rate:
+        return (parent1 + parent2) / 2
+    return parent1
+
+# Mutation operation
+def mutate(offspring):
+    if np.random.rand() < mutation_rate:
+        return np.clip(offspring + np.random.uniform(-1, 1), x_bounds[0], x_bounds[1])
+    return offspring
+
+# Main Genetic Algorithm loop
+population = initialize_population(population_size, x_bounds)
+best_fitness_history = []
+
+for generation in range(num_generations):
+    fitness = fitness_function(population)
+    best_fitness = np.max(fitness)
+    best_fitness_history.append(best_fitness)
+    
+    new_population = []
+    for _ in range(population_size):
+        parent1 = select_parents(population, fitness)
+        parent2 = select_parents(population, fitness)
+        offspring = crossover(parent1, parent2)
+        offspring = mutate(offspring)
+        new_population.append(offspring)
+
+    population = np.array(new_population)
+
+# Results
+best_solution = population[np.argmax(fitness_function(population))]
+print(f'Best solution: x = {best_solution}, f(x) = {fitness_function(best_solution)}')
+
+# Plotting the fitness history
+plt.plot(best_fitness_history)
+plt.xlabel('Generation')
+plt.ylabel('Best Fitness')
+plt.title('Best Fitness Over Generations')
+plt.show()
